@@ -3,6 +3,7 @@ import passport from 'passport';
 import { fork } from 'child_process';
 import calculate from '../calculate.js';
 import compression from 'compression';
+import operationRoutes from './operation-routes'
 import os from 'os';
 import logger from '../loggers/log4.js';
 
@@ -155,5 +156,7 @@ apiRoutes.get('*', (req, res) => {
     res.status(404).send(`<b>404 ERROR</b> - Could not find ${url} resource.`);
 
 });
+
+app.use('/api/v1/operations', operationRoutes);
 
 export default apiRoutes;
