@@ -22,7 +22,7 @@ const dividir0ps = async(req, res) => {
 
 const getAll0ps = async (req,res) => res.send(await getAll());
 
-export {
+export default {
     suma0ps,
     resta0ps,
     multiplicar0ps,
