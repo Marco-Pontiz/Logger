@@ -6,6 +6,7 @@ import compression from 'compression';
 import operationRoutes from './operation-routes'
 import os from 'os';
 import logger from '../loggers/log4.js';
+import authRoutes from '../routes/auth.routes'
 
 const apiRoutes = Router();
 
@@ -158,5 +159,6 @@ apiRoutes.get('*', (req, res) => {
 });
 
 app.use('/api/v1/operations', operationRoutes);
+app.use('/', authRoutes);   
 
 export default apiRoutes;
