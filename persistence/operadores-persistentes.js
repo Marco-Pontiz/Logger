@@ -1,7 +1,7 @@
 import MemoryContainer from "./container/memory.container";
 import FileConteiner from "./container/file.container";
 
-const containerMode = 'memory';
+const containerMode = 'fs';
 let container;
 
 switch (containerMode) {
