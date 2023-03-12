@@ -3,6 +3,7 @@ import session from 'express-session';
 import apiRoutes from './routes/indexRoutes.js';
 import * as dotenv from 'dotenv';
 import passport from 'passport';
+import singletonRouter from "./routes/singleton.routes"
 import { Strategy as LocalStrategy } from 'passport-local';
 
 
@@ -77,6 +78,7 @@ app.use(session({
 
 
 app.use("/", apiRoutes);
+app.use("/datos", singletonRouter);
 
 app.use(passport.initialize());
 
