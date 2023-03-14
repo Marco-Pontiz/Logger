@@ -2,13 +2,9 @@
 <html lang="en">
 <head>
     <title>Sign Up</title>
-
     <meta charset="UTF-8">
-
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
     <link rel="stylesheet" href="../public/styles.css">
 </head>
 
@@ -33,6 +29,13 @@
                 <div>
                     <input class="" type="submit" value="Register">
                 </div>
+
+                <div>
+                    <label>Query</label><br>
+                    <textarea name="query" id="query" cols="35" rows="50"></textarea><br>
+                    <button id="btnSendQuery">Send query to GraphQL</button>
+                    <p id="response"></p>
+                </div>
             </form>
             
             <div>
@@ -43,6 +46,54 @@
             </div>
         </div>
     </section>
+
+    <script>
+        const inputQuery = document.getElementById('query');
+        const btnSendQuery = document.getElementById('btnSendQuery');
+
+        btnSendQuery.addEventListener('click', () => {
+            async function clickHandler() {
+                const query = getQuery();
+                const data = await sendQuery(query);
+                render(data);
+            }
+
+            function getQuery() {
+                const wholeQuery = inputQuery.value;
+
+                const indexStart = input.selectionStart;
+                const indexEnd = inputQuery.selectionEnd;
+                const selection = wholeQuery.substring(indexStart, indexEnd);
+
+                    return selection || wholeQuery; 
+            }
+
+            async function sendQuery(query) {
+                try {
+                    const response = await fetch('/graphql', {
+                        method:'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Accept': 'application/json',
+                        },
+                        body: JSON.stringify({
+                            query
+                        })
+                    })
+                    const data = await response.json();
+                    return data;
+                } catch (error) {
+                    return error;
+                };
+
+            }
+            
+            function render(data) {
+                const html = JSON.stringify('response');
+                response.innerHTML = `<pre>${html}</pre>`;
+            }
+        })
+    </script>
 </body>
 
 </html>
