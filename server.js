@@ -3,54 +3,12 @@ import session from 'express-session';
 import apiRoutes from './routes/indexRoutes.js';
 import * as dotenv from 'dotenv';
 import passport from 'passport';
+import GraphQLController from './controller/grapql.controllers.js';
 import singletonRouter from "./routes/singleton.routes";
 import crypto from "crypto";
 import { Strategy as LocalStrategy } from 'passport-local';
-import { graphqlHTTP } from 'express-graphql';
-import { buildSchema } from "graphql";
 
 dotenv.config();
-
-const recordatorioSchema = buildSchema(`
-input RecordatorioInput {
-    titulo: String,
-    descripcion: String,
-    timestamp: Float,
-    }
-    type Recordatorio {
-        id: ID!
-        titulo: String
-        descripcion: String
-        timestamp: Float
-    }
-    type Query {
-        getRecordatorios: [Recordatorio],
-    }
-    type Mutation {
-        createRecordatorio(datos: RecordatorioInput): Recordatorio,
-    }
-`);
-
-class Recordatorio {
-    constructor(id, {titulo, descripcion, timestamp}) {
-        this.id = id;
-        this.titulo = titulo;
-        this.descripcion = descripcion;
-        this.timestamp = timestamp
-    }
-}
-
-const Recordatorios = [];
-function getRecordatorios() {
-    return Recordatorios;
-}
-
-function createRecordatorio({ datos }) {
-    const id = crypto.randomBytes(10).toString("hex");
-    const nuevoRecordatorio = new Recordatorio(id, datos);
-    Recordatorios.push(nuevoRecordatorio);
-    return nuevoRecordatorio;
-}
 
 const users = [];
 
@@ -122,23 +80,13 @@ app.use(session({
 
 app.use("/", apiRoutes);
 app.use("/datos", singletonRouter);
-app.use("/graphql", graphqlHTTP({
-    schema: recordatorioSchema,
-    rootValue: {
-        getRecordatorios,
-        createRecordatorio,
-    },
-    graphiql: false,
-}))
+app.use("/graphql", new GraphQLController())
 
 app.use(passport.initialize());
-
 app.use(passport.session());
 
 app.use(express.urlencoded({ extended: true }));
-
 app.use(express.json());
-
 app.use(express.static('public'));
 
 
