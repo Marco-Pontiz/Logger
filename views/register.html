@@ -32,7 +32,7 @@
 
                 <div>
                     <label>Query</label><br>
-                    <textarea name="query" id="query" cols="35" rows="50"></textarea><br>
+                    <textarea name="query" id="query" cols="35" rows="40"></textarea><br>
                     <button id="btnSendQuery">Send query to GraphQL</button>
                     <p id="response"></p>
                 </div>
@@ -51,7 +51,8 @@
         const inputQuery = document.getElementById('query');
         const btnSendQuery = document.getElementById('btnSendQuery');
 
-        btnSendQuery.addEventListener('click', () => {
+        btnSendQuery.addEventListener('click', clickHandler)
+        
             async function clickHandler() {
                 const query = getQuery();
                 const data = await sendQuery(query);
@@ -92,7 +93,6 @@
                 const html = JSON.stringify('response');
                 response.innerHTML = `<pre>${html}</pre>`;
             }
-        })
     </script>
 </body>
 
